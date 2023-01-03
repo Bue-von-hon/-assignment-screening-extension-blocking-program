@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+  <meta charset="utf-8">
+  <TITLE>파일 확장자 제한</TITLE>
+</HEAD>
+<BODY>
+고정 확장자
+<input type="checkbox" value="bat" onclick="buttonClick(event)" id="bat"> bat
+<input type="checkbox" value="cmd" onclick="buttonClick(event)" id="cmd"> cmd
+<input type="checkbox" value="com" onclick="buttonClick(event)" id="com"> com
+<input type="checkbox" value="cpl" onclick="buttonClick(event)" id="cpl"> cpl
+<input type="checkbox" value="exe" onclick="buttonClick(event)" id="exe"> exe
+<input type="checkbox" value="scr" onclick="buttonClick(event)" id="scr"> scr
+<input type="checkbox" value="js" onclick="buttonClick(event)" id="js"> js
+
+<br>
+
+커스텀 확장자
+<form id="form">
+  <input type="text" name="expression">
+  <button type="submit">등록</button>
+  <input type="text" name="regularExpression" value="false" style="visibility: hidden">
+</form>
+
+<div id="main" style="display: inline;width: 450px; height: 600px">
+
+</div>
+
+</BODY>
+</HTML>
+
+<script type="text/javascript">
+  function buttonClick(event)  {
+    if(event.target.checked)  {
+      fetch("http://localhost:8080/extension-string", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          expression: event.target.value,
+          regularExpression: "false"
+        }),
+      }).then((response) => console.log(response)).then(syncWserver);
+    } else {
+      fetch("http://localhost:8080/extension-string", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          expression: event.target.value,
+          regularExpression: "false"
+        }),
+      }).then((response) => console.log(response)).then(syncWserver);
+    }
+  }
+
+  function deleteBtnClick(event) {
+    fetch("http://localhost:8080/extension-string", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        expression: event.target.value,
+        regularExpression: "false"
+      }),
+    }).then((response) => console.log(response)).then(syncWserver);
+  }
+
+  function syncWserver() {
+    let mainElement = document.getElementById("main");
+    while (mainElement.lastElementChild) {
+      mainElement.removeChild(mainElement.lastElementChild);
+    }
+    fetch("http://localhost:8080/expression-list")
+    .then((response) => response.json())
+    .then(data => {
+      for (let i = 0; i < data.length; i++) {
+        const elementById = document.getElementById(data[i].expression);
+        if (elementById == null) {
+
+          let subElement = document.createElement("div");
+          subElement.style.margin = "5px"
+          subElement.style.float = "left"
+          subElement.style.width = "55px"
+          subElement.style.height = "20px"
+
+          // 확장자 인풋태그
+          let element = document.createElement("input");
+          element.style.display = "inline"
+          element.style.width = "70%"
+          element.style.height = "100%"
+          element.value = data[i].expression
+          element.disabled = true
+          element.style.border = "none"
+          element.style.outline = "none"
+
+          // 확장자 삭제 버튼
+          let btn = document.createElement("button");
+          btn.style.display = "inline"
+          btn.value = data[i].expression
+          btn.innerText = "X"
+          btn.style.width = "30%"
+          btn.style.height = "100%"
+          btn.style.marginLeft = "-10px"
+          btn.style.border = "none"
+          btn.style.outline = "none"
+          btn.addEventListener("click", () => {
+            deleteBtnClick(event)
+          })
+
+          subElement.appendChild(element)
+          subElement.appendChild(btn)
+          mainElement.appendChild(subElement)
+
+          continue
+        }
+        else {
+          elementById.checked = true;
+        }
+      }
+    })
+  }
+
+  function registerExtesion(evt) {
+    evt.preventDefault();
+    const expression = evt.target.expression.value;
+    const regularExpression = evt.target.regularExpression.value;
+    evt.target.expression.value = ""
+    if (!expression || !regularExpression) {
+      return alert('확장자를 입력하세요');
+    }
+
+    const url = '/extension-string';
+    const data = { expression, regularExpression };
+    fetch('/extension-string', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then(syncWserver);
+  }
+  document.querySelector('form').addEventListener('submit', registerExtesion);
+
+  syncWserver()
+</script>
