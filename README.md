@@ -1,6 +1,10 @@
 ### 동작 화면
 ![이미지](https://user-images.githubusercontent.com/46879264/210290214-7153cc2f-1250-4c8c-99a9-4702c3879214.gif)
 
+### ERD
+<img width="245" alt="Screenshot 2023-01-03 at 12 01 57 PM" src="https://user-images.githubusercontent.com/46879264/210295090-45fc0ec7-00d5-4def-9d42-4c94b2331ac3.png">
+
+
 ### 기능 구현
 - [X] 확장자 등록하기
 - [X] 확장자 삭제하기
