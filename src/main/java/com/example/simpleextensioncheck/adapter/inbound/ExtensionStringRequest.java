@@ -1,5 +1,6 @@
-package com.example.simpleextensioncheck;
+package com.example.simpleextensioncheck.adapter.inbound;
 
+import com.example.simpleextensioncheck.domain.ExtensionString;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.example.simpleextensioncheck;
+package com.example.simpleextensioncheck.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

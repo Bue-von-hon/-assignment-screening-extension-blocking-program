@@ -1,5 +1,7 @@
-package com.example.simpleextensioncheck;
+package com.example.simpleextensioncheck.application;
 
+import com.example.simpleextensioncheck.adapter.outbound.ExtesionRepository;
+import com.example.simpleextensioncheck.domain.ExtensionString;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

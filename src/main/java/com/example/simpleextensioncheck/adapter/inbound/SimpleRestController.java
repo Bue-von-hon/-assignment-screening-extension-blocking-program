@@ -1,5 +1,7 @@
-package com.example.simpleextensioncheck;
+package com.example.simpleextensioncheck.adapter.inbound;
 
+import com.example.simpleextensioncheck.application.ExtensionStringService;
+import com.example.simpleextensioncheck.domain.ExtensionString;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

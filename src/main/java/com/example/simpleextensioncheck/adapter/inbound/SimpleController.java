@@ -1,4 +1,4 @@
-package com.example.simpleextensioncheck;
+package com.example.simpleextensioncheck.adapter.inbound;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
