@@ -10,15 +10,19 @@ public class ExtensionStringService {
 
     private final ExtesionRepository repository;
 
-    public void doSave(ExtensionString extensionString) {
+    public void doSave(final ExtensionString extensionString) {
         final boolean isExist = repository.existsByExpression(extensionString.getExpression());
+        final long count = repository.count();
+        if (count >= 200) {
+            return;
+        }
         if (isExist) {
             return;
         }
         repository.save(extensionString);
     }
 
-    public void delete(ExtensionString extensionString) {
+    public void delete(final ExtensionString extensionString) {
         final ExtensionString save = repository.findByExpression(extensionString.getExpression());
         if (save == null) {
             return;
